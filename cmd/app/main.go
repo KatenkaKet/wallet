@@ -17,6 +17,8 @@ import (
 )
 
 // Запускать из корня проекта!
+// Команда для запуска докера
+// docker-compose --env-file ./configs/config.env up --build
 
 func main() {
 	if err := initConfig(); err != nil {
