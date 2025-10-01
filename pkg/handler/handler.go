@@ -21,11 +21,10 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		r.POST("/wallet", h.createWalletTransaction)
 		r.GET("/wallets/:id", h.getWalletBalance)
 
-		r.GET("/wallets/all", h.getWallets)
-		r.GET("/wallets/transactions", h.getWalletTransactions)
-		r.GET("/wallet/transactions/:id", h.getWalletTransactionsById)
+		//r.GET("/wallets/all", h.getWallets)
+		//r.GET("/wallets/transactions", h.getWalletTransactions)
+		//r.GET("/wallet/:id/transactions", h.getWalletTransactionsById)
 	}
 
 	return router
-
 }
