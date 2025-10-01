@@ -1,8 +1,12 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/KatenkaKet/wallet"
 	"github.com/KatenkaKet/wallet/pkg/handler"
@@ -11,6 +15,8 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/spf13/viper"
 )
+
+// Запускать из корня проекта!
 
 func main() {
 	if err := initConfig(); err != nil {
@@ -34,11 +40,31 @@ func main() {
 	service := service.NewService(repos)
 	hdl := handler.NewHandler(service)
 
-	fmt.Println(viper.GetString("PORT"))
+	//fmt.Println(viper.GetString("PORT"))
 
 	srv := new(wallet.Server)
-	if err := srv.Run(viper.GetString("PORT"), hdl.InitRoutes()); err != nil {
-		log.Fatal("error occured while running http server: ", err.Error())
+
+	go func() {
+		if err := srv.Run(viper.GetString("PORT"), hdl.InitRoutes()); err != nil {
+			if err != http.ErrServerClosed {
+				log.Fatal("error occurred while running http server: ", err.Error())
+			}
+		}
+	}()
+
+	log.Println("Listening on " + viper.GetString("PORT"))
+
+	quet := make(chan os.Signal, 1)
+	signal.Notify(quet, syscall.SIGINT, syscall.SIGTERM)
+	<-quet
+
+	log.Println("Shutting down...")
+	if err := srv.Shutdown(context.Background()); err != nil {
+		log.Fatal("error occured while shutting down http server: ", err.Error())
+	}
+
+	if err := db.Close(); err != nil {
+		log.Fatal("error occured while closing database: ", err.Error())
 	}
 
 }

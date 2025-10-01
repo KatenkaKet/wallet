@@ -27,10 +27,7 @@ func (h *Handler) createWalletTransaction(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"walletId":      WT.ValletId.UUID.String(),
-		"operationType": WT.OperationType,
-		"amount":        WT.Amount,
-		"status":        "success",
+		"status": "success",
 	})
 
 }
@@ -51,19 +48,6 @@ func (h *Handler) getWalletBalance(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"walletId": walletID.UUID.String(),
-		"balance":  balance,
+		"balance": balance,
 	})
 }
-
-//func (h *Handler) getWallets(context *gin.Context) {
-//
-//}
-//
-//func (h *Handler) getWalletTransactions(context *gin.Context) {
-//
-//}
-//
-//func (h *Handler) getWalletTransactionsById(context *gin.Context) {
-//
-//}

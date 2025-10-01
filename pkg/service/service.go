@@ -8,6 +8,8 @@ import (
 	uuid "github.com/jackc/pgtype/ext/gofrs-uuid"
 )
 
+//go:generate mockgen -source=service.go -destination=mocks/mock.go
+
 type Wallet interface {
 	GetBalance(ctx context.Context, walletID uuid.UUID) (float64, error)
 	UpdateBalance(ctx context.Context, WT wallet.WalletTransactions) error
