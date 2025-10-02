@@ -138,6 +138,7 @@ func TestWalletPsql_CreateTransaction(t *testing.T) {
 
 			if test.expectErr {
 				assert.Error(t, err)
+				return
 			} else {
 				assert.NoError(t, err)
 			}
