@@ -20,6 +20,11 @@ import (
 // Команда для запуска докера
 // docker-compose --env-file ./configs/config.env up --build
 
+// @Title Wallet
+// @version 1.0
+// @description API для управления кошельком (просмотр баланса, пополнение и снятие). В данном проекте была заполнена теблица wallets тестовами данными. Вот UUID кошелька, который точно есть: 11111111-1111-1111-1111-111111111111
+// @host localhost:8080
+// @BasePath /api/v1
 func main() {
 	if err := initConfig(); err != nil {
 		log.Fatal("error initializing config: ", err.Error())

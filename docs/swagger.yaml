@@ -1,0 +1,99 @@
+basePath: /api/v1
+definitions:
+  wallet.WalletTransactions:
+    properties:
+      amount:
+        type: number
+      id:
+        type: integer
+      operationType:
+        enum:
+        - DEPOSIT
+        - WITHDRAW
+        type: string
+      valletId:
+        type: string
+    required:
+    - amount
+    - operationType
+    - valletId
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: 'API для управления кошельком (просмотр баланса, пополнение и снятие).
+    В данном проекте была заполнена теблица wallets тестовами данными. Вот UUID кошелька,
+    который точно есть: 11111111-1111-1111-1111-111111111111'
+  title: Wallet
+  version: "1.0"
+paths:
+  /wallet:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Данные транзакции
+        in: body
+        name: transaction
+        required: true
+        schema:
+          $ref: '#/definitions/wallet.WalletTransactions'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'status: success'
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Ошибка валидации или неверные данные
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Ошибка при обновлении баланса
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Пополнить или снять деньги с кошелька, а также записать историю выполненных
+        операций
+      tags:
+      - wallet
+  /wallets/{id}:
+    get:
+      parameters:
+      - description: ID кошелька
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Баланс кошелька
+          schema:
+            additionalProperties:
+              format: float64
+              type: number
+            type: object
+        "400":
+          description: Неверный ID кошелька
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Ошибка сервера
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Получить баланс кошелька по ID
+      tags:
+      - wallet
+swagger: "2.0"

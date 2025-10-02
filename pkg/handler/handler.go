@@ -3,6 +3,11 @@ package handler
 import (
 	"github.com/KatenkaKet/wallet/pkg/service"
 	"github.com/gin-gonic/gin"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	_ "github.com/KatenkaKet/wallet/docs"
 )
 
 type Handler struct {
@@ -21,6 +26,9 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		r.POST("/wallet", h.createWalletTransaction)
 		r.GET("/wallets/:id", h.getWalletBalance)
 	}
+
+	// Swagger UI
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	return router
 }
